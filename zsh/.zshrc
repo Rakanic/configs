@@ -125,13 +125,18 @@ f() {
 # Usage: rgf [initial-query]
 rgf() {
     local rg_cmd="rg --column --line-number --no-heading --color=always --smart-case"
+    # awk-based preview: arithmetic happens inside awk so the surrounding
+    # shell (zsh) never sees $((...)) — which previously failed with
+    # "bad math expression: illegal character: '" because fzf's
+    # substitution machinery left quoting inside the expression.
+    local preview='awk -v n={2} '"'"'BEGIN{a=n-3;b=n+10} NR>=a && NR<=b {printf "%s%4d │ %s\n", (NR==n?"▶ ":"  "), NR, $0}'"'"' {1} 2>/dev/null'
     local selection
     selection=$(
-        FZF_DEFAULT_COMMAND="$rg_cmd ${1:-''}" \
+        FZF_DEFAULT_COMMAND="$rg_cmd ${1:-.}" \
         "$HOME/.fzf/bin/fzf" --ansi --disabled \
             --bind "change:reload:$rg_cmd {q} || true" \
             --delimiter : \
-            --preview 'sed -n "{2}p" {1} 2>/dev/null; echo; sed -n "$(({2}-3)),$(({2}+10))p" {1} 2>/dev/null' \
+            --preview "$preview" \
             --preview-window=right:60%
     )
     if [[ -n $selection ]]; then
