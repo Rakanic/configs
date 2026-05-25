@@ -203,6 +203,12 @@ RPROMPT='%(?..%F{160}✗ %?%f )%F{240}%*%f'
 source $ZSH/oh-my-zsh.sh
 source <("$HOME/.fzf/bin/fzf" --zsh)
 
+# Re-assert git aliases AFTER oh-my-zsh — the OMZ `git` plugin defines
+# its own `gl`, `gc`, `gca` (and others) which would otherwise win.
+alias gl='git log'
+alias gc='git commit'
+alias gca='git commit -a'
+
 # fzf: orange-on-black palette to match tmux/nvim
 export FZF_DEFAULT_OPTS="
   --height=40% --border=rounded --layout=reverse --info=inline
