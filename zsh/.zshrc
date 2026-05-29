@@ -47,7 +47,7 @@ alias sp26='source /tools/C/ee290-fa24-2/ee290-env.sh && cd /tools/scratch/nicor
 alias mxgen='cd /scratch/nicorakela/MxGen && source /tools/commercial/flexlm/flexlm.sh && source /tools/flexlm/flexlm.sh'
 alias bringup='cd /tools/scratch/nicorakela/sp25-Baremetal-IDE/ && source /tools/scratch/nicorakela/sp25-chips/env.sh && source /tools/C/ee290-fa24-2/ee290-env.sh && source /tools/commercial/flexlm/flexlm.sh && source /tools/commercial/xilinx/Vivado/2024.2/settings64.sh && source /tools/flexlm/flexlm.sh'
 alias setupcy='./build-setup.sh --use-lean-conda -s 6 -s 7 -s 8 -s 9'
-#alias nvim='/users/nicorakela/nvim-linux-x86_64/bin/nvim'
+alias nvim='~/nvim-linux-x86_64/bin/nvim'
 
 alias gt='git log --graph --decorate --oneline --all'
 alias gs='git status'
