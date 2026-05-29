@@ -250,6 +250,19 @@ vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, opts)
 
 vim.notify = require("notify")
 
+-- OSC52 clipboard when SSH'd in: nvim emits the clipboard contents as a
+-- terminal escape sequence, and iTerm2 / tmux (with set-clipboard on) forward
+-- it to the macOS clipboard. Without this, `clipboard=unnamedplus` silently
+-- drops yanks on remote hosts that have no pbcopy/xclip.
+if vim.env.SSH_TTY or vim.env.SSH_CONNECTION then
+  local osc52 = require("vim.ui.clipboard.osc52")
+  vim.g.clipboard = {
+    name  = "OSC 52",
+    copy  = { ["+"] = osc52.copy("+"),  ["*"] = osc52.copy("*") },
+    paste = { ["+"] = osc52.paste("+"), ["*"] = osc52.paste("*") },
+  }
+end
+
 --------------------------------------------------------------------------------------------
 -- Plugins
 --------------------------------------------------------------------------------------------
