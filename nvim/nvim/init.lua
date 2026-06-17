@@ -15,7 +15,13 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-  { 'nvim-treesitter/nvim-treesitter', build = ':TSUpdate' },
+  -- NOTE: nvim-treesitter intentionally NOT installed. Its `master` branch was
+  -- archived (2025-05-24) and is incompatible with Neovim 0.12: it overrides the
+  -- bundled markdown injections query with one that calls a directive
+  -- (#set-lang-from-info-string!) whose handler crashes on the 0.12 treesitter
+  -- API, erroring on every markdown file with code fences. Neovim 0.12 already
+  -- bundles the markdown/markdown_inline/lua/c/vim/vimdoc parsers + clean
+  -- queries, which is all render-markdown needs.
   'nvim-lua/plenary.nvim',
   { 'nvim-telescope/telescope.nvim', tag = '0.1.4' },
   'folke/tokyonight.nvim',
@@ -79,7 +85,7 @@ require("lazy").setup({
   },
   {
     'MeanderingProgrammer/render-markdown.nvim',
-    dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
+    dependencies = { 'nvim-tree/nvim-web-devicons' }, -- uses Neovim's bundled markdown parser
     opts = {},
   },
   -- {
@@ -100,7 +106,6 @@ require("lazy").setup({
     "olimorris/codecompanion.nvim",
     dependencies = {
       "nvim-lua/plenary.nvim",
-      "nvim-treesitter/nvim-treesitter",
     },
   },
 })
